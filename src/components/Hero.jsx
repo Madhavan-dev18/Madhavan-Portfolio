@@ -2,7 +2,6 @@ import React from 'react';
 
 const COORDS = [
   { label: 'EMAIL', value: 'madhavantt2017@gmail.com' },
-  { label: 'PHONE', value: '+91 9840978445' },
   { label: 'GITHUB', value: 'Madhavan-dev18', href: 'https://github.com/Madhavan-dev18' },
   { label: 'LOCATION', value: 'Chennai / Vellore, TN' },
 ];

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const LINKS = [
   { type: 'EMAIL', value: 'madhavantt2017@gmail.com', href: 'mailto:madhavantt2017@gmail.com' },
-  { type: 'PHONE', value: '+91 9840978445', href: 'tel:+919840978445' },
   { type: 'GITHUB', value: 'github.com/Madhavan-dev18', href: 'https://github.com/Madhavan-dev18' },
   { type: 'LINKEDIN', value: 'linkedin.com/in/madhavan-shivakumar-dev', href: 'https://linkedin.com/in/madhavan-shivakumar-dev' },
 ];
@@ -67,8 +66,8 @@ export default function Contact() {
                 className="contact-link-row"
                 key={l.type}
                 href={l.href}
-                target={l.type !== 'EMAIL' && l.type !== 'PHONE' ? '_blank' : undefined}
-                rel={l.type !== 'EMAIL' && l.type !== 'PHONE' ? 'noreferrer' : undefined}
+                target={l.type !== 'EMAIL' ? '_blank' : undefined}
+                rel={l.type !== 'EMAIL' ? 'noreferrer' : undefined}
               >
                 <span className="cl-type">{l.type}</span>
                 <span className="cl-value">{l.value}</span>

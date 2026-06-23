@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import TOPOLOGY from 'vanta/dist/vanta.topology.min';
+import { Search, Bell, Mail, MapPin, Link as LinkIcon, Code, Calendar, Award } from 'lucide-react';
 import './index.css';
 
 // Projects Data
@@ -38,9 +41,8 @@ const STATS = [
 
 // Experience Data
 const EXP = [
-  { date: 'May 2025 - Jun 2025', title: 'Python Developer Intern', desc: 'Built a Django-based bus reservation system with SQLite, implementing complete session flows from route search through booking confirmation. Designed a relational schema via Django ORM and implemented server-side form validation and CSRF protection.', label: 'Nextgen Technology Pvt. Ltd.', btnColor: 'var(--color-purple)' },
-  { date: '2023 - 2026', title: 'B.Sc. Computer Science', desc: 'Thiruvalluvar University, KMG College of Arts & Science. Active placement-season candidate. Consistently developing production-ready systems outside of standard curriculum.', label: 'Education', btnColor: 'var(--color-blue)' },
-  { date: 'Continuous', title: 'Certifications', desc: 'Python & OOP, Data Science & Analytics, Agile Methodology (Infosys Springboard)', label: 'Infosys', btnColor: 'var(--color-green)' }
+  { date: 'May 2025 - Jun 2025', title: 'Python Developer Intern', desc: 'Engineered Django-based reservation system with SQLite. Implemented complete session flows, relational ORM schemas, server-side validation, and CSRF protection.', label: 'Nextgen Tech', btnColor: 'var(--color-purple)' },
+  { date: '2023 - 2026', title: 'B.Sc. Computer Science', desc: 'Thiruvalluvar University. Core coursework in Data Structures, Algorithms, and System Design.', label: 'Education', btnColor: 'var(--color-blue)' }
 ];
 
 // Skills Data
@@ -52,51 +54,86 @@ const SKILLS = [
   { category: 'Testing & Security', items: ['Vitest', 'RTL', 'CVE Remediation', 'Concurrency Control', 'RLS'], color: 'var(--color-pink)' }
 ];
 
+// Certificates Data
+const CERTS = [
+  { name: 'Basics of Python', file: 'Basics of Python-infosys Springboard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Data Visualisation', file: 'Data Visualisation using Python-Infosys SpringBoard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Exploratory Data Analysis', file: 'Exploratory Data Analysis-Infosys SpringBoard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Introduction to Agile Methodology', file: 'Introduction to Agile methodology-Infosys SpringBoard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Introduction to Data Science', file: 'Introduction to Data Science-Infosys SpringBoard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Python for Data Science', file: 'Python for Data Science-Infosys SpringBoard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Object Oriented Programming', file: 'Object Oriented Programming using Python-Infosys SpringBoard.pdf', issuer: 'Infosys Springboard' },
+  { name: 'Infosys Springboard Certificate', file: 'Madhavan_S_4829590.pdf', issuer: 'Infosys Springboard' }
+];
+
 export default function App() {
   const [expandedProject, setExpandedProject] = useState(null);
   const [expandedExp, setExpandedExp] = useState(null);
+
+  const vantaRef = useRef(null);
+  const [vantaEffect, setVantaEffect] = useState(null);
+
+  useEffect(() => {
+    if (!vantaEffect && vantaRef.current) {
+      setVantaEffect(TOPOLOGY({
+        el: vantaRef.current,
+        THREE: THREE,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0xb794f4,
+        backgroundColor: 0xfcfaf8
+      }));
+    }
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    }
+  }, [vantaEffect]);
 
   const toggleProject = (id) => setExpandedProject(prev => prev === id ? null : id);
   const toggleExp = (idx) => setExpandedExp(prev => prev === idx ? null : idx);
 
   return (
-    <div className="dashboard-layout">
+    <>
+      <div ref={vantaRef} style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1 }}></div>
+      <div className="dashboard-layout">
       
-      {/* SIDEBAR */}
-      <div className="sidebar">
+      {/* TOPBAR */}
+      <header className="topbar">
         <div className="brand">
           MADHAVAN S <div className="brand-dot"></div>
         </div>
         
-        <div className="nav-group">
-          <div className="nav-label">Navigation</div>
+        <nav className="nav-group">
           <a href="#dashboard" className="nav-item">
-            <div><span className="nav-icon">✦</span> Dashboard</div>
-            <div className="nav-badge">04</div>
+            <div>Dashboard</div>
           </a>
           <a href="#projects" className="nav-item">
-            <div><span className="nav-icon">▢</span> Projects</div>
+            <div>Projects</div>
           </a>
           <a href="#experience" className="nav-item">
-            <div><span className="nav-icon">▤</span> Experience & Skills</div>
+            <div>Experience</div>
           </a>
           <a href="#repos" className="nav-item">
-            <div><span className="nav-icon">◳</span> Repositories</div>
-            <div className="nav-badge" style={{backgroundColor: 'var(--color-green)'}}>08</div>
+            <div>Repositories</div>
           </a>
           <a href="#contact" className="nav-item">
-            <div><span className="nav-icon">✉</span> Contact</div>
+            <div>Contact</div>
           </a>
-        </div>
+        </nav>
 
-        <div className="sidebar-bottom">
+        <div className="topbar-right">
           <div className="avatar"></div>
           <div className="user-info">
             <span className="user-name">Madhavan Shivakumar</span>
             <span className="user-role">AI App Builder</span>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* MAIN CONTENT */}
       <div className="main-content">
@@ -105,18 +142,18 @@ export default function App() {
         <div className="top-nav">
           <h1 className="page-title">Portfolio</h1>
           <div className="top-actions">
-            <span className="action-icon">🔍</span>
-            <span className="action-icon">🔔</span>
+            <span className="action-icon"><Search size={18} /></span>
+            <span className="action-icon"><Bell size={18} /></span>
             <button className="btn-primary" onClick={() => window.location.href="mailto:madhavantt2017@gmail.com"}>
               <span>+</span> Hire Me
             </button>
           </div>
         </div>
 
-        <div className="scrolling-sections" style={{display: 'flex', flexDirection: 'column', gap: '80px'}}>
+        <div className="scrolling-sections" style={{display: 'flex', flexDirection: 'column', gap: '40px'}}>
           
           {/* DASHBOARD SECTION */}
-          <section id="dashboard" className="page-section" style={{gap: '24px'}}>
+          <section id="dashboard" className="page-section" style={{gap: '16px'}}>
             <h2 className="section-title" style={{marginBottom: 0}}>Overview</h2>
             <div style={{fontSize: '16px', lineHeight: '1.6', color: 'var(--fg-muted)', marginBottom: '16px'}}>
               Full-stack developer specializing in secure, concurrent backend systems and applied AI integrations, built primarily with Python/Django and Next.js/TypeScript. Track record of auditing and remediating real production vulnerabilities (CVE-level RCE fixes), implementing row-level locking for race-condition-free transactions, and shipping deployed, end-to-end applications.
@@ -138,7 +175,7 @@ export default function App() {
           </section>
 
           {/* PROJECTS SECTION */}
-          <section id="projects" className="page-section" style={{gap: '24px'}}>
+          <section id="projects" className="page-section" style={{gap: '16px'}}>
             <h2 className="section-title" style={{marginBottom: 0}}>Projects</h2>
             <div className="project-grid">
               {PROJECTS.map((proj, i) => (
@@ -170,54 +207,54 @@ export default function App() {
           </section>
 
           {/* EXPERIENCE SECTION */}
-          <section id="experience" className="page-section" style={{gap: '24px'}}>
-            <div className="dashboard-grid">
-              <div className="left-panel">
-                <h2 className="section-title">Timeline</h2>
-                {EXP.map((e, i) => (
-                  <div className="side-card mb-4" key={i}>
-                    <div className="side-card-label">
-                      <span style={{fontSize: '16px'}}>📅</span> {e.date}
-                    </div>
-                    <div className="side-card-title">{e.title}</div>
-                    
-                    {expandedExp === i ? (
-                      <div className="side-card-desc">
-                        {e.desc}
-                      </div>
-                    ) : (
-                      <div className="side-card-desc">{e.desc.substring(0, 100)}...</div>
-                    )}
-                    
-                    <div style={{display: 'flex', gap: '12px'}}>
-                      <div className="side-card-btn" style={{backgroundColor: e.btnColor}}>{e.label}</div>
-                      <button className="side-card-btn" style={{backgroundColor: '#fff', cursor: 'pointer'}} onClick={() => toggleExp(i)}>
-                        {expandedExp === i ? 'Less' : 'More Details'}
-                      </button>
-                    </div>
+          <section id="experience" className="page-section" style={{gap: '16px'}}>
+            <h2 className="section-title" style={{marginBottom: 0}}>Experience & Timeline</h2>
+            <div className="project-grid">
+              {EXP.map((e, i) => (
+                <div className="side-card" key={i}>
+                  <div className="side-card-label">
+                    <span style={{fontSize: '16px', display: 'inline-flex', verticalAlign: 'middle', marginRight: '4px'}}><Calendar size={16} /></span> {e.date}
                   </div>
-                ))}
-              </div>
-              <div className="right-panel">
-                <h2 className="section-title">Technical Skills</h2>
-                <div className="skills-container">
-                  {SKILLS.map((skillGroup, i) => (
-                    <div className="skill-group" key={i}>
-                      <div className="skill-category">{skillGroup.category}</div>
-                      <div className="skill-items">
-                        {skillGroup.items.map(skill => (
-                          <span className="skill-tag" style={{borderColor: skillGroup.color, backgroundColor: skillGroup.color + '22'}} key={skill}>{skill}</span>
-                        ))}
-                      </div>
+                  <div className="side-card-title">{e.title}</div>
+                  
+                  {expandedExp === i ? (
+                    <div className="side-card-desc">
+                      {e.desc}
                     </div>
-                  ))}
+                  ) : (
+                    <div className="side-card-desc">{e.desc.substring(0, 100)}...</div>
+                  )}
+                  
+                  <div style={{display: 'flex', gap: '12px'}}>
+                    <div className="side-card-btn" style={{backgroundColor: e.btnColor}}>{e.label}</div>
+                    <button className="side-card-btn" style={{backgroundColor: '#fff', cursor: 'pointer'}} onClick={() => toggleExp(i)}>
+                      {expandedExp === i ? 'Less' : 'More Details'}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SKILLS SECTION */}
+          <section id="skills" className="page-section" style={{gap: '16px'}}>
+            <h2 className="section-title" style={{marginBottom: 0}}>Technical Skills</h2>
+            <div className="project-grid">
+              {SKILLS.map((skillGroup, i) => (
+                <div className="skill-group" key={i}>
+                  <div className="skill-category">{skillGroup.category}</div>
+                  <div className="skill-items">
+                    {skillGroup.items.map(skill => (
+                      <span className="skill-tag" style={{borderColor: skillGroup.color, backgroundColor: skillGroup.color + '22'}} key={skill}>{skill}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
           {/* REPOS SECTION */}
-          <section id="repos" className="page-section" style={{gap: '24px'}}>
+          <section id="repos" className="page-section" style={{gap: '16px'}}>
             <h2 className="section-title" style={{marginBottom: 0}}>Top GitHub Repositories</h2>
             <div className="project-grid">
               {['havan-transit', 'havan-stream', 'vivasayi', 'havan-vision', 'chr-system', 'Swiggy-Clone'].map(repo => (
@@ -230,8 +267,27 @@ export default function App() {
             <a href="https://github.com/Madhavan-dev18" target="_blank" rel="noreferrer" className="btn-primary" style={{margin: '0 auto', marginTop: '24px'}}>View All on GitHub</a>
           </section>
 
+          {/* CERTIFICATES SECTION */}
+          <section id="certificates" className="page-section" style={{gap: '16px'}}>
+            <h2 className="section-title" style={{marginBottom: 0}}>Certificates</h2>
+            <div className="slider-container">
+              <div className="slider-track">
+                {[...CERTS, ...CERTS].map((cert, i) => (
+                <div className="slider-card" key={i}>
+                  <div style={{marginBottom: '16px', color: 'var(--color-yellow)'}}><Award size={32} /></div>
+                  <div className="slider-card-title">{cert.name}</div>
+                  <div className="slider-card-issuer">{cert.issuer}</div>
+                  <a href={`/Certificates/${encodeURIComponent(cert.file)}`} target="_blank" rel="noreferrer" className="slider-card-btn">
+                    View Certificate ↗
+                  </a>
+                </div>
+              ))}
+              </div>
+            </div>
+          </section>
+
           {/* CONTACT SECTION */}
-          <section id="contact" className="page-section contact-section" style={{gap: '24px', alignItems: 'flex-start'}}>
+          <section id="contact" className="page-section contact-section" style={{gap: '16px', alignItems: 'flex-start'}}>
             <h2 className="section-title" style={{marginBottom: 0, width: '100%'}}>Contact</h2>
             <div className="contact-card" style={{margin: '0 auto', width: '100%'}}>
               <h2>Get in Touch</h2>
@@ -239,23 +295,20 @@ export default function App() {
               
               <div className="contact-details">
                 <div className="contact-item">
-                  <span className="contact-icon">✉</span>
+                  <span className="contact-icon"><Mail size={18} /></span>
                   <a href="mailto:madhavantt2017@gmail.com">madhavantt2017@gmail.com</a>
                 </div>
+
                 <div className="contact-item">
-                  <span className="contact-icon">📞</span>
-                  <a href="tel:+919840978445">+91 9840978445</a>
-                </div>
-                <div className="contact-item">
-                  <span className="contact-icon">📍</span>
+                  <span className="contact-icon"><MapPin size={18} /></span>
                   <span>Vellore, India</span>
                 </div>
                 <div className="contact-item">
-                  <span className="contact-icon">🔗</span>
+                  <span className="contact-icon"><LinkIcon size={18} /></span>
                   <a href="https://linkedin.com/in/madhavan-shivakumar-dev" target="_blank" rel="noreferrer">LinkedIn Profile</a>
                 </div>
                 <div className="contact-item">
-                  <span className="contact-icon">💻</span>
+                  <span className="contact-icon"><Code size={18} /></span>
                   <a href="https://github.com/Madhavan-dev18" target="_blank" rel="noreferrer">github.com/Madhavan-dev18</a>
                 </div>
               </div>
@@ -270,5 +323,6 @@ export default function App() {
       </div>
 
     </div>
+    </>
   );
 }
