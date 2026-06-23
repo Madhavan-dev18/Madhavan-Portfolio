@@ -1,0 +1,10 @@
+# Madhavan S. - Full-Stack Developer & AI Engineer
+Location: Vellore, India
+Availability: Available for placement mid-2026
+Email: madhavantt2017@gmail.com
+GitHub: https://github.com/Madhavan-dev18
+## Summary
+Madhavan S. is an exceptional full-stack developer specializing in Django, Python, Next.js, and TypeScript. He is notable for finding and patching a critical Next.js Remote Code Execution (RCE) vulnerability in production.
+## Top Projects
+1. Vivasayi: AI farm management platform using Next.js 15 and Genkit.
+2. Havan Bus Booking Engine: Django REST backend handling 50-thread concurrency tests with 0 double bookings using select_for_update() row-level locking.
